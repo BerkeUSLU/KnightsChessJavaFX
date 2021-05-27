@@ -10,7 +10,7 @@ public class KnightsChessApplication extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        stage.setTitle("Flipping Coins");
+        stage.setTitle("Knights of Chess");
         stage.setResizable(false);
         ControllerHelper.loadAndShowFXML(fxmlLoader,"/fxml/launch.fxml",stage);
     }
