@@ -75,4 +75,24 @@ public class ChessBoardState {
         }
         return possibleMoves;
     }
+
+    public boolean isKnightMoveValid(PlayerState playerState,int row, int col) {
+        Pair posPair = playerState.getMoveList().get(0);
+        Pair destPair = new Pair(row, col);
+        int state = ChessBoardState.chessBoard.get(row).get(col);
+        if (ChessBoardState.possibleMoves.contains(destPair) && state != 2 && state != 3 && state != 1) {
+            if(playerState.isPlayer1Turn()) {
+                chessBoard.get(row).set(col, 2);
+            }
+            else {
+                chessBoard.get(row).set(col, 3);
+            }
+            chessBoard.get(posPair.getRow()).set(posPair.getColumn(),1);
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
 }
