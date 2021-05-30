@@ -114,6 +114,14 @@ public class GameController {
         }
     }
 
+    private void clearPossibleMovesOnBoard(List<Pair> possibleMoves) {
+        System.out.println(possibleMoves);
+        for(Pair p: possibleMoves){
+            ImageView imageView = getImageViewFromGridPane(gridPane,p.getRow(),p.getColumn());
+            imageView.setImage(null);
+        }
+    }
+
     private ImageView getImageViewFromGridPane(GridPane gridPane, int row, int col) {
         for (Node node : gridPane.getChildren()) {
             if (GridPane.getColumnIndex(node) == col && GridPane.getRowIndex(node) == row) {
