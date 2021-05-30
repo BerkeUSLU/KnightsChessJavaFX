@@ -44,12 +44,16 @@ public class GameController {
 
         ImageView imageView = (ImageView) mouseEvent.getTarget();
 
+        if(!chessBoardState.gameOver(playerState)) {
+            if (checkTurn(state)) return;
+
             if (playerState.getMoveList().isEmpty() && (state == 2 || state == 3)) {
                 Pair pair = new Pair(row, column);
                 playerState.getMoveList().add(pair);
                 playerState.getImageViewList().add(imageView);
                 ChessBoardState.possibleMoves = chessBoardState.showPossibleMoves(pair);
                 showPossibleMovesOnBoard(ChessBoardState.possibleMoves);
+                chessBoardState.gameOver(playerState);
             } else if (playerState.getMoveList().size() == 1 && state == 0) {
 
                 if (chessBoardState.isKnightMoveValid(playerState, row, column)) {
@@ -60,6 +64,8 @@ public class GameController {
                 }
             }
         }
+
+    }
 
     private boolean checkTurn(Integer state) {
         if(playerState.isPlayer1Turn()){
