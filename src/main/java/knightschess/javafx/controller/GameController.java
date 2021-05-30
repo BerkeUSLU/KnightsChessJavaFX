@@ -57,6 +57,7 @@ public class GameController {
             } else if (playerState.getMoveList().size() == 1 && state == 0) {
 
                 if (chessBoardState.isKnightMoveValid(playerState, row, column)) {
+                    clearPossibleMovesOnBoard(ChessBoardState.possibleMoves);
                     moveKnight(imageView);
                     switchPlayer();
                 } else {
