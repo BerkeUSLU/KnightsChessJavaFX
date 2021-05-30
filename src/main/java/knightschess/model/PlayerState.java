@@ -11,6 +11,7 @@ public class PlayerState {
     private List<Pair> moveList;
     private List<ImageView> imageViewList;
     private boolean isPlayer1Turn;
+
     public PlayerState(){
         moveList = new ArrayList<>();
         imageViewList = new ArrayList<>();
