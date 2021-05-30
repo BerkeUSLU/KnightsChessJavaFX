@@ -61,6 +61,22 @@ public class GameController {
             }
         }
 
+    private boolean checkTurn(Integer state) {
+        if(playerState.isPlayer1Turn()){
+            if(state == 3){
+                System.out.println("Invalid turn!");
+                return true;
+            }
+        }
+        else{
+            if(state == 2){
+                System.out.println("Invalid turn");
+                return true;
+            }
+        }
+        return false;
+    }
+
 
 
     private void moveKnight(ImageView im) {
