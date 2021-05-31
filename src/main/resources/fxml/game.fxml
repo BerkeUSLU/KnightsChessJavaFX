@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -219,5 +220,7 @@
                 <Font name="SansSerif Regular" size="23.0" />
             </font>
         </Label>
+        <Button layoutX="47.0" layoutY="549.0" mnemonicParsing="false" onAction="#mainMenuAction" text="Main Menu" />
+        <Button layoutX="479.0" layoutY="549.0" mnemonicParsing="false" onAction="#highScoresAction" text="High Scores" />
     </children>
 </AnchorPane>

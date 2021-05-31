@@ -1,6 +1,8 @@
 package knightschess.javafx.controller;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -8,12 +10,16 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
+import javafx.stage.Stage;
 import knightschess.model.ChessBoardState;
 import knightschess.model.Pair;
 import knightschess.model.PlayerState;
 import knightschess.model.ResultState;
+import util.javafx.ControllerHelper;
 import util.json.JsonHelper;
 
+import java.io.IOException;
 import java.util.List;
 
 public class GameController {
@@ -22,6 +28,8 @@ public class GameController {
     private PlayerState playerState = new PlayerState();
 
     private ResultState resultState = new ResultState();
+
+    private FXMLLoader fxmlLoader = new FXMLLoader();
 
     @FXML
     private GridPane gridPane;
@@ -43,6 +51,8 @@ public class GameController {
 
     private Image restrictImage =  new Image(getClass().getResource("/images/restrict.png").toExternalForm());
 
+    private String backGroundStyle = "-fx-background-color: #6b3e2e;";
+
     public void initializeGameState(String player1, String player2) {
         resultState.setFirstPlayer(player1);
         resultState.setSecondPlayer(player2);
@@ -53,14 +63,14 @@ public class GameController {
     @FXML
     public void initialize(){
         chessBoardState.initializeBoard();
-        ChessBoardState.possibleMoves.add(new Pair(-1,-1)); // dummy value for beginning of the game
+        chessBoardState.possibleMoves.add(new Pair(-1,-1)); // dummy value for beginning of the game
         System.out.println(playerState.getMoveList());
     }
 
     public void handleClickOnCell(MouseEvent mouseEvent){
         var row= GridPane.getRowIndex((Node) mouseEvent.getSource());
         var column= GridPane.getColumnIndex((Node) mouseEvent.getSource());
-        var state = ChessBoardState.chessBoard.get(row).get(column);
+        var state = chessBoardState.chessBoard.get(row).get(column);
 
         ImageView imageView = (ImageView) mouseEvent.getTarget();
 
@@ -77,17 +87,17 @@ public class GameController {
                 playerState.getImageViewList().add(imageView);
                 System.out.println(playerState.getMoveList());
                 System.out.println(playerState.getImageViewList());
-                ChessBoardState.possibleMoves = chessBoardState.showPossibleMoves(pair);
-                showPossibleMovesOnBoard(ChessBoardState.possibleMoves);
+                chessBoardState.possibleMoves = chessBoardState.showPossibleMoves(pair);
+                showPossibleMovesOnBoard(chessBoardState.possibleMoves);
 
-               if(gameOver(playerState)) {
-                   JsonHelper.write(resultState);
-               }
+                if(gameOver(playerState)){
+                    JsonHelper.write(resultState);
+                }
             }
             else if (playerState.getMoveList().size() == 1 && state == 0) {
 
                 if (chessBoardState.isKnightMoveValid(playerState, row, column)) {
-                    clearPossibleMovesOnBoard(ChessBoardState.possibleMoves);
+                    clearPossibleMovesOnBoard(chessBoardState.possibleMoves);
                     moveKnight(imageView);
                     switchPlayer();
                 }
@@ -134,8 +144,23 @@ public class GameController {
         else {
             playerState.setPlayer1Turn(true);
         }
+        changePlayerLabel(playerState);
     }
 
+    private void changePlayerLabel(PlayerState playerState){
+        if(!playerState.isPlayer1Turn()) {
+            player1Label.setStyle(null);
+            player1Label.setTextFill(Color.rgb(107,62,46));
+            player2Label.setStyle(backGroundStyle);
+            player2Label.setTextFill(Color.WHITE);
+        }
+        else {
+            player2Label.setStyle(null);
+            player2Label.setTextFill(Color.rgb(107,62,46));
+            player1Label.setStyle(backGroundStyle);
+            player1Label.setTextFill(Color.WHITE);
+        }
+    }
     public boolean gameOver(PlayerState playerState){
         if(chessBoardState.isGameFinished()){
             if(playerState.isPlayer1Turn()){
@@ -183,5 +208,15 @@ public class GameController {
             }
         }
         return null;
+    }
+
+    public void mainMenuAction(ActionEvent actionEvent) throws IOException {
+        Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+        ControllerHelper.loadAndShowFXML(fxmlLoader,"/fxml/launch.fxml",stage);
+    }
+
+    public void highScoresAction(ActionEvent actionEvent) throws IOException {
+        Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+        ControllerHelper.loadAndShowFXML(fxmlLoader,"/fxml/highScores.fxml",stage);
     }
 }
