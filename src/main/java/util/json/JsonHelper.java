@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import knightschess.javafx.controller.GameController;
+import knightschess.javafx.controller.HighScoresController;
 import knightschess.model.ResultState;
 
 import java.io.File;
@@ -31,4 +32,7 @@ public class JsonHelper {
         }
     }
 
+    public static File read(HighScoresController highScoresController) {
+        return new File(highScoresController.getClass().getClassLoader().getResource("data.json").getFile());
+    }
 }
