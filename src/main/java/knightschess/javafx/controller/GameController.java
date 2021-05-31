@@ -1,8 +1,8 @@
 package knightschess.javafx.controller;
 
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -11,6 +11,7 @@ import javafx.scene.layout.Pane;
 import knightschess.model.ChessBoardState;
 import knightschess.model.Pair;
 import knightschess.model.PlayerState;
+import knightschess.model.ResultState;
 
 import java.util.List;
 
@@ -19,8 +20,19 @@ public class GameController {
 
     private PlayerState playerState = new PlayerState();
 
+    private ResultState resultState = new ResultState();
+
     @FXML
     private GridPane gridPane;
+
+    @FXML
+    private Label player1Label;
+
+    @FXML
+    private Label player2Label;
+
+    @FXML
+    private Label errorLabel;
 
     private Image knightBlack = new Image(getClass().getResource("/images/knightBlack.png").toExternalForm());
 
@@ -29,6 +41,13 @@ public class GameController {
     private Image moveImage = new Image(getClass().getResource("/images/move.png").toExternalForm());
 
     private Image restrictImage =  new Image(getClass().getResource("/images/restrict.png").toExternalForm());
+
+    public void initializeGameState(String player1, String player2) {
+        resultState.setFirstPlayer(player1);
+        resultState.setSecondPlayer(player2);
+        player1Label.setText(player1);
+        player2Label.setText(player2);
+    }
 
     @FXML
     public void initialize(){
@@ -44,24 +63,33 @@ public class GameController {
 
         ImageView imageView = (ImageView) mouseEvent.getTarget();
 
-        if(!chessBoardState.gameOver(playerState)) {
-            if (checkTurn(state)) return;
+        if(!gameOver(playerState)) {
+            errorLabel.setText("");
+
+            if (checkTurn(state)){
+                return;
+            }
 
             if (playerState.getMoveList().isEmpty() && (state == 2 || state == 3)) {
                 Pair pair = new Pair(row, column);
                 playerState.getMoveList().add(pair);
                 playerState.getImageViewList().add(imageView);
+                System.out.println(playerState.getMoveList());
+                System.out.println(playerState.getImageViewList());
                 ChessBoardState.possibleMoves = chessBoardState.showPossibleMoves(pair);
                 showPossibleMovesOnBoard(ChessBoardState.possibleMoves);
-                chessBoardState.gameOver(playerState);
-            } else if (playerState.getMoveList().size() == 1 && state == 0) {
+
+                gameOver(playerState);
+            }
+            else if (playerState.getMoveList().size() == 1 && state == 0) {
 
                 if (chessBoardState.isKnightMoveValid(playerState, row, column)) {
                     clearPossibleMovesOnBoard(ChessBoardState.possibleMoves);
                     moveKnight(imageView);
                     switchPlayer();
-                } else {
-                    System.out.println("Invalid move!");
+                }
+                else {
+                    errorLabel.setText("Invalid move!");
                 }
             }
         }
@@ -71,20 +99,18 @@ public class GameController {
     private boolean checkTurn(Integer state) {
         if(playerState.isPlayer1Turn()){
             if(state == 3){
-                System.out.println("Invalid turn!");
+                errorLabel.setText("Invalid turn!");
                 return true;
             }
         }
         else{
             if(state == 2){
-                System.out.println("Invalid turn");
+                errorLabel.setText("Invalid turn!");
                 return true;
             }
         }
         return false;
     }
-
-
 
     private void moveKnight(ImageView im) {
         playerState.getImageViewList().get(0).setImage(restrictImage);
@@ -105,6 +131,21 @@ public class GameController {
         else {
             playerState.setPlayer1Turn(true);
         }
+    }
+
+    public boolean gameOver(PlayerState playerState){
+        if(chessBoardState.isGameFinished()){
+            if(playerState.isPlayer1Turn()){
+                resultState.setWinner(resultState.getSecondPlayer());
+                errorLabel.setText(resultState.getSecondPlayer() + " won the game!");
+            }
+            else {
+                resultState.setWinner(resultState.getFirstPlayer());
+                errorLabel.setText(resultState.getFirstPlayer() + " won the game!");
+            }
+            return true;
+        }
+        return false;
     }
 
     private void showPossibleMovesOnBoard(List<Pair> possibleMoves) {
@@ -140,5 +181,4 @@ public class GameController {
         }
         return null;
     }
-
 }

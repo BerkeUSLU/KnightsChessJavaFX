@@ -94,21 +94,8 @@ public class ChessBoardState {
             return false;
         }
     }
-    public boolean gameOver(PlayerState playerState){
-        if(isGameFinished()){
-            System.out.println("Game Over!");
-            if(playerState.isPlayer1Turn()){
-                System.out.println("Player 2 won the game!");
-            }
-            else {
-                System.out.println("Player 1 won the game!");
-            }
-            return true;
-        }
-        return false;
-    }
 
-    private boolean isGameFinished() {
+    public boolean isGameFinished() {
         if(ChessBoardState.possibleMoves.isEmpty()){
             return true;
         }
