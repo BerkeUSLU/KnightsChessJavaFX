@@ -9,6 +9,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import util.javafx.ControllerHelper;
 
 import java.io.IOException;
 
@@ -50,7 +51,8 @@ public class LaunchController {
     }
 
     public void highScoresAction(ActionEvent actionEvent) throws IOException{
-
+        Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+        ControllerHelper.loadAndShowFXML(fxmlLoader,"/fxml/highScores.fxml",stage);
     }
 
 }
