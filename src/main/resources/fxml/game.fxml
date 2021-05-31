@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -7,10 +8,11 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="584.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="knightschess.javafx.controller.GameController">
+<AnchorPane prefHeight="594.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="knightschess.javafx.controller.GameController">
     <children>
-        <GridPane fx:id="gridPane" gridLinesVisible="true" layoutX="66.0" layoutY="129.0" prefHeight="441.0" prefWidth="468.0">
+        <GridPane fx:id="gridPane" gridLinesVisible="true" layoutX="67.0" layoutY="82.0" prefHeight="441.0" prefWidth="468.0">
             <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -202,5 +204,20 @@
                 <ImageView fitHeight="52.0" fitWidth="58.0" layoutX="126.0" layoutY="343.0" onMouseClicked="#handleClickOnCell" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.rowIndex="5" />
             </children>
         </GridPane>
+        <Label fx:id="player1Label" alignment="CENTER" layoutX="66.0" layoutY="20.0" prefHeight="52.0" prefWidth="220.0" style="-fx-background-color: #6b3e2e;" textFill="WHITE">
+            <font>
+                <Font name="SansSerif Regular" size="24.0" />
+            </font>
+        </Label>
+        <Label fx:id="player2Label" alignment="CENTER" layoutX="314.0" layoutY="20.0" prefHeight="52.0" prefWidth="220.0" textFill="#6b3e2e">
+            <font>
+                <Font name="SansSerif Regular" size="24.0" />
+            </font>
+        </Label>
+        <Label fx:id="errorLabel" alignment="CENTER" layoutX="124.0" layoutY="533.0" prefHeight="56.0" prefWidth="355.0" textFill="#ff0606">
+            <font>
+                <Font name="SansSerif Regular" size="23.0" />
+            </font>
+        </Label>
     </children>
 </AnchorPane>
