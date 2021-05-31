@@ -12,6 +12,7 @@ import knightschess.model.ChessBoardState;
 import knightschess.model.Pair;
 import knightschess.model.PlayerState;
 import knightschess.model.ResultState;
+import util.json.JsonHelper;
 
 import java.util.List;
 
@@ -79,7 +80,9 @@ public class GameController {
                 ChessBoardState.possibleMoves = chessBoardState.showPossibleMoves(pair);
                 showPossibleMovesOnBoard(ChessBoardState.possibleMoves);
 
-                gameOver(playerState);
+               if(gameOver(playerState)) {
+                   JsonHelper.write(resultState);
+               }
             }
             else if (playerState.getMoveList().size() == 1 && state == 0) {
 
