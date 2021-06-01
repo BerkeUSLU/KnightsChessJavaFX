@@ -81,18 +81,22 @@ public class ChessBoardState {
         Pair destPair = new Pair(row, col);
         int state = chessBoard.get(row).get(col);
         if (possibleMoves.contains(destPair) && state != 2 && state != 3  && state != 1) {
-            if(playerState.isPlayer1Turn()) {
-                chessBoard.get(row).set(col, 2);
-            }
-            else {
-                chessBoard.get(row).set(col, 3);
-            }
-            chessBoard.get(posPair.getRow()).set(posPair.getColumn(),1);
+            changeKnightState(playerState, row, col, posPair);
             return true;
         }
         else {
             return false;
         }
+    }
+
+    public void changeKnightState(PlayerState playerState, int row, int col, Pair posPair) {
+        if(playerState.isPlayer1Turn()) {
+            chessBoard.get(row).set(col, 2);
+        }
+        else {
+            chessBoard.get(row).set(col, 3);
+        }
+        chessBoard.get(posPair.getRow()).set(posPair.getColumn(),1);
     }
 
     public boolean isGameFinished() {
