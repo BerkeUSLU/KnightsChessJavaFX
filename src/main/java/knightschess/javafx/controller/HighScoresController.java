@@ -9,12 +9,14 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import knightschess.model.HighScore;
 import knightschess.model.ResultState;
+import org.tinylog.Logger;
 import util.javafx.ControllerHelper;
 import util.json.JsonHelper;
 
@@ -38,6 +40,7 @@ public class HighScoresController {
 
     @FXML
     public void initialize(){
+        Logger.debug("Loading high scores...");
         player.setCellValueFactory(new PropertyValueFactory<>("player"));
         score.setCellValueFactory(new PropertyValueFactory<>("score"));
 
@@ -73,6 +76,7 @@ public class HighScoresController {
     }
 
     public void backAction(ActionEvent actionEvent) throws IOException {
+        Logger.debug("{} is pressed", ((Button) actionEvent.getSource()).getText());
         Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
         ControllerHelper.loadAndShowFXML(fxmlLoader,"/fxml/launch.fxml",stage);
     }

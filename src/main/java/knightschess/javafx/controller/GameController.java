@@ -4,6 +4,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -16,6 +17,7 @@ import knightschess.model.ChessBoardState;
 import knightschess.model.Pair;
 import knightschess.model.PlayerState;
 import knightschess.model.ResultState;
+import org.tinylog.Logger;
 import util.javafx.ControllerHelper;
 import util.json.JsonHelper;
 
@@ -63,8 +65,7 @@ public class GameController {
     @FXML
     public void initialize(){
         chessBoardState.initializeBoard();
-        chessBoardState.possibleMoves.add(new Pair(-1,-1)); // dummy value for beginning of the game
-        System.out.println(playerState.getMoveList());
+        chessBoardState.possibleMoves.add(new Pair(-1,-1));
     }
 
     public void handleClickOnCell(MouseEvent mouseEvent){
@@ -73,6 +74,8 @@ public class GameController {
         var state = chessBoardState.chessBoard.get(row).get(column);
 
         ImageView imageView = (ImageView) mouseEvent.getTarget();
+
+        Logger.debug("Cell ({},{}) is pressed",row, column);
 
         if(!gameOver(playerState)) {
             errorLabel.setText("");
@@ -85,8 +88,10 @@ public class GameController {
                 Pair pair = new Pair(row, column);
                 playerState.getMoveList().add(pair);
                 playerState.getImageViewList().add(imageView);
-                System.out.println(playerState.getMoveList());
-                System.out.println(playerState.getImageViewList());
+
+                Logger.debug(playerState.getMoveList());
+                Logger.debug(playerState.getImageViewList());
+
                 chessBoardState.possibleMoves = chessBoardState.showPossibleMoves(pair);
                 showPossibleMovesOnBoard(chessBoardState.possibleMoves);
 
@@ -103,6 +108,7 @@ public class GameController {
                 }
                 else {
                     errorLabel.setText("Invalid move!");
+                    Logger.warn("Invalid move");
                 }
             }
         }
@@ -113,12 +119,14 @@ public class GameController {
         if(playerState.isPlayer1Turn()){
             if(state == 3){
                 errorLabel.setText("Invalid turn!");
+                Logger.warn("Invalid turn");
                 return true;
             }
         }
         else{
             if(state == 2){
                 errorLabel.setText("Invalid turn!");
+                Logger.warn("Invalid turn");
                 return true;
             }
         }
@@ -140,9 +148,11 @@ public class GameController {
         playerState.getImageViewList().clear();
         if(playerState.isPlayer1Turn()) {
             playerState.setPlayer1Turn(false);
+            Logger.debug("Switched to {} ",player2Label.getText());
         }
         else {
             playerState.setPlayer1Turn(true);
+            Logger.debug("Switched to {} ",player1Label.getText());
         }
         changePlayerLabel(playerState);
     }
@@ -171,13 +181,14 @@ public class GameController {
                 resultState.setWinner(resultState.getFirstPlayer());
                 errorLabel.setText(resultState.getFirstPlayer() + " won the game!");
             }
+            Logger.warn("End Game!!!");
             return true;
         }
         return false;
     }
 
     private void showPossibleMovesOnBoard(List<Pair> possibleMoves) {
-        System.out.println(possibleMoves);
+        Logger.debug(possibleMoves);
         for(Pair p: possibleMoves){
             ImageView imageView = getImageViewFromGridPane(gridPane,p.getRow(),p.getColumn());
             imageView.setImage(moveImage);
@@ -211,11 +222,13 @@ public class GameController {
     }
 
     public void mainMenuAction(ActionEvent actionEvent) throws IOException {
+        Logger.debug("{} is pressed", ((Button) actionEvent.getSource()).getText());
         Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
         ControllerHelper.loadAndShowFXML(fxmlLoader,"/fxml/launch.fxml",stage);
     }
 
     public void highScoresAction(ActionEvent actionEvent) throws IOException {
+        Logger.debug("{} is pressed", ((Button) actionEvent.getSource()).getText());
         Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
         ControllerHelper.loadAndShowFXML(fxmlLoader,"/fxml/highScores.fxml",stage);
     }
