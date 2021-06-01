@@ -6,6 +6,9 @@ import lombok.Data;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Class representing the state of the player during game.
+ */
 @Data
 public class PlayerState {
     private List<Pair> moveList;

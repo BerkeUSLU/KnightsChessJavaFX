@@ -13,7 +13,20 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Class provides helper methods for writing to and reading from file with the Jackson library
+ */
 public class JsonHelper {
+
+    /**
+     * takes data.json file from resources directory
+     * initializes list  of result state
+     * checks if file is empty or not
+     * if file is not empty reads from file and adds everything to list
+     * after that adds {@param resultState} to the list of result state
+     * writes list to file as json
+     * @param resultState
+     */
     public static void write(ResultState resultState) {
         File file = new File(GameController.class.getClassLoader().getResource("data.json").getFile());
         ObjectMapper mapper = new ObjectMapper().registerModule(new JavaTimeModule());
@@ -32,6 +45,11 @@ public class JsonHelper {
         }
     }
 
+    /**
+     * finds file with help of {@param highScoresController} classLoader
+     * @param highScoresController
+     * @return data.json file
+     */
     public static File read(HighScoresController highScoresController) {
         return new File(highScoresController.getClass().getClassLoader().getResource("data.json").getFile());
     }
